@@ -1,6 +1,7 @@
 # read-manager
 
 > 读书项目控制台
+运用vue、vue-router、element-ui技术栈搭建的控制台
 
 ## Build Setup
 
