@@ -31,7 +31,7 @@
 			</el-table-column>
 			<el-table-column align="center" label="操作" width="160">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="handleAdd(scope.$index, bookData)">增数</el-button>
+<!--					<el-button size="mini" @click="handleAdd(scope.$index, bookData)">增数</el-button>-->
 					<el-button size="mini" type="danger" @click="handleDelete(scope.$index, bookData)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -68,7 +68,7 @@
 			},
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);
-				this.getBookComment(val);
+				this.getBook(val);
 			},
 			timestampToTime(timestamp) {
 				var myData = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -110,16 +110,15 @@
 						alert("请检查网络连接");
 					});
 			},
-			getBookComment(start_num = 0, page_size = 10000) {
+			getBookComment(currentPage = 1) {
 
 				var _this = this;
 				var params = new URLSearchParams();
-				params.append('start_num', start_num);
-				params.append('page_size', page_size);
+				params.append('currentPage', currentPage);
 				axios({
 						method: 'post',
 						dataType: 'jsonp',
-						url: 'http://47.93.190.186:8080/getWonderfulPost.do',
+						url: 'http://47.93.190.186:8080/getWonderfulPostList.do',
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
@@ -130,7 +129,7 @@
 					.then(function(response) {
 						_this.bookData = [];
 						if(response.data.statusCode == 102) {
-							var responseData = response.data.result;
+							var responseData = response.data.result.pageData;
 							console.log(responseData)
 							for(var i = 0; i < responseData.length; i++) {
 								console.log(responseData[i].pubDate)
@@ -138,8 +137,8 @@
 								responseData[i].pictures = 'http://47.93.190.186:8080' + responseData[i].pictures;
 								_this.bookData.push(responseData[i]);
 							}
-//							_this.pageSize = response.data.result.pageCount;
-//							_this.totalSize = response.data.result.totalCount;
+							_this.pageSize = response.data.result.pageCount;
+							_this.totalSize = response.data.result.totalCount;
 						} else {
 							alert(response.data.message);
 						}

@@ -1,46 +1,53 @@
 <template>
 	<div>
 		<el-tabs v-model="activeName" @tab-click="handleClick" style="clear: both;">
-			<el-tab-pane label="所有" name="0">
+			<el-tab-pane label="待审核" name="0">
 				<el-table :data="orderData" style="width: 100%">
-					<el-table-column prop="userId" label="分享者id">
+					<el-table-column prop="reservationId" label="订单id">
+					</el-table-column>
+					<el-table-column label="封面">
+						<template slot-scope="scope">
+							<div slot="reference" class="name-wrapper">
+								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约书名">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>书id: {{ scope.row.rbBook.isbn }}</p>
+								<p>作者: {{ scope.row.rbBook.author }}</p>
+								<p>出版社: {{ scope.row.rbBook.pubHouse }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbBook.name }}
+								</div>
+							</el-popover>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约者">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>用户id: {{ scope.row.userId }}</p>
+								<p>学号: {{ scope.row.rbUser.stuNum }}</p>
+								<p>学院: {{ scope.row.rbUser.college }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbUser.name }}
+								</div>
+							</el-popover>
+						</template>
 					</el-table-column>
 					<el-table-column align="center" prop="phone" label="手机号" width="140">
-					</el-table-column>
-					<el-table-column label="订单状态">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>订单id: {{ scope.row.reservationId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.state }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column label="书">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>书id: {{ scope.row.bookId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.rbBook }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column prop="deadline" label="预定归还日期" width="165" align="center">
-					</el-table-column>
-					<el-table-column prop="returnDate" label="归还日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column prop="takenDate" label="领取日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column align='center' label="操作" width='250'>
 						<template slot-scope="scope">
 							<el-button size="mini" @click="pass(scope.$index, orderData)">通过</el-button>
-							<el-button size="mini" @click="rejectDialog = true">取消</el-button>
+							<el-button size="mini" @click="rejectDialog = true">拒绝</el-button>
 							<!--daigai-->
-							<el-dialog title="取消理由" :visible.sync="rejectDialog">
+							<el-dialog title="拒绝理由" :visible.sync="rejectDialog">
 								<el-form>
-									<el-form-item label="取消理由">
+									<el-form-item label="拒绝理由">
 										<el-input placeholder="请填写不通过的理由" v-model="rejectReason" auto-complete="off"></el-input>
 									</el-form-item>
 								</el-form>
@@ -55,33 +62,40 @@
 			</el-tab-pane>
 			<el-tab-pane label="待领取" name="1">
 				<el-table :data="orderData" style="width: 100%">
-					<el-table-column prop="userId" label="分享者id">
+					<el-table-column prop="reservationId" label="订单id">
+					</el-table-column>
+					<el-table-column label="封面">
+						<template slot-scope="scope">
+							<div slot="reference" class="name-wrapper">
+								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约书名">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>书id: {{ scope.row.rbBook.isbn }}</p>
+								<p>作者: {{ scope.row.rbBook.author }}</p>
+								<p>出版社: {{ scope.row.rbBook.pubHouse }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbBook.name }}
+								</div>
+							</el-popover>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约者">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>用户id: {{ scope.row.userId }}</p>
+								<p>学号: {{ scope.row.rbUser.stuNum }}</p>
+								<p>学院: {{ scope.row.rbUser.college }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbUser.name }}
+								</div>
+							</el-popover>
+						</template>
 					</el-table-column>
 					<el-table-column align="center" prop="phone" label="手机号" width="140">
-					</el-table-column>
-					<el-table-column label="订单状态">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>订单id: {{ scope.row.reservationId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.state }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column label="书">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>书id: {{ scope.row.bookId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.rbBook }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column prop="deadline" label="预定归还日期" width="165" align="center">
-					</el-table-column>
-					<el-table-column prop="returnDate" label="归还日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column prop="takenDate" label="领取日期" width="165" align="center">
 					</el-table-column>
@@ -94,157 +108,179 @@
 			</el-tab-pane>
 			<el-tab-pane label="未通过" name="2">
 				<el-table :data="orderData" style="width: 100%">
-					<el-table-column prop="userId" label="分享者id">
+					<el-table-column prop="reservationId" label="订单id">
+					</el-table-column>
+					<el-table-column label="封面">
+						<template slot-scope="scope">
+							<div slot="reference" class="name-wrapper">
+								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约书名">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>书id: {{ scope.row.rbBook.isbn }}</p>
+								<p>作者: {{ scope.row.rbBook.author }}</p>
+								<p>出版社: {{ scope.row.rbBook.pubHouse }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbBook.name }}
+								</div>
+							</el-popover>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约者">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>用户id: {{ scope.row.userId }}</p>
+								<p>学号: {{ scope.row.rbUser.stuNum }}</p>
+								<p>学院: {{ scope.row.rbUser.college }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbUser.name }}
+								</div>
+							</el-popover>
+						</template>
 					</el-table-column>
 					<el-table-column align="center" prop="phone" label="手机号" width="140">
 					</el-table-column>
-					<el-table-column label="订单状态">
+					<el-table-column prop="takenDate" label="领取日期" width="165" align="center">
+					</el-table-column>
+				</el-table>
+			</el-tab-pane>
+			<el-tab-pane label="待归还" name="3">
+				<el-table :data="orderData" style="width: 100%">
+					<el-table-column prop="reservationId" label="订单id">
+					</el-table-column>
+					<el-table-column label="封面">
+						<template slot-scope="scope">
+							<div slot="reference" class="name-wrapper">
+								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约书名">
 						<template slot-scope="scope">
 							<el-popover trigger="hover" placement="top">
-								<p>订单id: {{ scope.row.reservationId }}</p>
+								<p>书id: {{ scope.row.rbBook.isbn }}</p>
+								<p>作者: {{ scope.row.rbBook.author }}</p>
+								<p>出版社: {{ scope.row.rbBook.pubHouse }}</p>
 								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.state }}</el-tag>
+									{{ scope.row.rbBook.name }}
 								</div>
 							</el-popover>
 						</template>
 					</el-table-column>
-					<el-table-column label="书">
+					<el-table-column label="预约者">
 						<template slot-scope="scope">
 							<el-popover trigger="hover" placement="top">
-								<p>书id: {{ scope.row.bookId }}</p>
+								<p>用户id: {{ scope.row.userId }}</p>
+								<p>学号: {{ scope.row.rbUser.stuNum }}</p>
+								<p>学院: {{ scope.row.rbUser.college }}</p>
 								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.rbBook }}</el-tag>
+									{{ scope.row.rbUser.name }}
 								</div>
 							</el-popover>
 						</template>
 					</el-table-column>
-					<el-table-column prop="deadline" label="预定归还日期" width="165" align="center">
+					<el-table-column align="center" prop="phone" label="手机号" width="140">
 					</el-table-column>
-					<el-table-column prop="returnDate" label="归还日期" width="165" align="center">
+					<el-table-column prop="deadline" label="预订归还日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column prop="takenDate" label="领取日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column align='center' label="操作" width='250'>
 						<template slot-scope="scope">
-							<el-button size="mini" @click="pass(scope.$index, orderData)">通过</el-button>
-							<el-button size="mini" @click="rejectDialog = true">取消</el-button>
-							<!--daigai-->
-							<el-dialog title="取消理由" :visible.sync="rejectDialog">
-								<el-form>
-									<el-form-item label="取消理由">
-										<el-input placeholder="请填写不通过的理由" v-model="rejectReason" auto-complete="off"></el-input>
-									</el-form-item>
-								</el-form>
-								<div slot="footer" class="dialog-footer">
-									<el-button @click="rejectDialog = false">取 消</el-button>
-									<el-button type="primary" @click="cancel(scope.$index, orderData)">确 定</el-button>
-								</div>
-							</el-dialog>
+							<el-button size="mini" @click="returnBook(scope.$index, orderData)">确认归还</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
 			</el-tab-pane>
-			<el-tab-pane label="超期" name="3">
+			<el-tab-pane label="已超期" name="4">
 				<el-table :data="orderData" style="width: 100%">
-					<el-table-column prop="userId" label="分享者id">
+					<el-table-column prop="reservationId" label="订单id">
+					</el-table-column>
+					<el-table-column label="封面">
+						<template slot-scope="scope">
+							<div slot="reference" class="name-wrapper">
+								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约书名">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>书id: {{ scope.row.rbBook.isbn }}</p>
+								<p>作者: {{ scope.row.rbBook.author }}</p>
+								<p>出版社: {{ scope.row.rbBook.pubHouse }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbBook.name }}
+								</div>
+							</el-popover>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约者">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>用户id: {{ scope.row.userId }}</p>
+								<p>学号: {{ scope.row.rbUser.stuNum }}</p>
+								<p>学院: {{ scope.row.rbUser.college }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbUser.name }}
+								</div>
+							</el-popover>
+						</template>
 					</el-table-column>
 					<el-table-column align="center" prop="phone" label="手机号" width="140">
 					</el-table-column>
-					<el-table-column label="订单状态">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>订单id: {{ scope.row.reservationId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.state }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column label="书">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>书id: {{ scope.row.bookId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.rbBook }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column prop="deadline" label="预定归还日期" width="165" align="center">
-					</el-table-column>
-					<el-table-column prop="returnDate" label="归还日期" width="165" align="center">
+					<el-table-column prop="deadline" label="预订归还日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column prop="takenDate" label="领取日期" width="165" align="center">
-					</el-table-column>
-					<el-table-column align='center' label="操作" width='250'>
-						<template slot-scope="scope">
-							<el-button size="mini" @click="pass(scope.$index, orderData)">通过</el-button>
-							<el-button size="mini" @click="rejectDialog = true">取消</el-button>
-							<!--daigai-->
-							<el-dialog title="取消理由" :visible.sync="rejectDialog">
-								<el-form>
-									<el-form-item label="取消理由">
-										<el-input placeholder="请填写不通过的理由" v-model="rejectReason" auto-complete="off"></el-input>
-									</el-form-item>
-								</el-form>
-								<div slot="footer" class="dialog-footer">
-									<el-button @click="rejectDialog = false">取 消</el-button>
-									<el-button type="primary" @click="cancel(scope.$index, orderData)">确 定</el-button>
-								</div>
-							</el-dialog>
-						</template>
 					</el-table-column>
 				</el-table>
 			</el-tab-pane>
-			<el-tab-pane label="已归还" name="4">
+			<el-tab-pane label="已归还" name="5">
 				<el-table :data="orderData" style="width: 100%">
-					<el-table-column prop="userId" label="分享者id">
+					<el-table-column prop="reservationId" label="订单id">
+					</el-table-column>
+					<el-table-column label="封面">
+						<template slot-scope="scope">
+							<div slot="reference" class="name-wrapper">
+								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约书名">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>书id: {{ scope.row.rbBook.isbn }}</p>
+								<p>作者: {{ scope.row.rbBook.author }}</p>
+								<p>出版社: {{ scope.row.rbBook.pubHouse }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbBook.name }}
+								</div>
+							</el-popover>
+						</template>
+					</el-table-column>
+					<el-table-column label="预约者">
+						<template slot-scope="scope">
+							<el-popover trigger="hover" placement="top">
+								<p>用户id: {{ scope.row.userId }}</p>
+								<p>学号: {{ scope.row.rbUser.stuNum }}</p>
+								<p>学院: {{ scope.row.rbUser.college }}</p>
+								<div slot="reference" class="name-wrapper">
+									{{ scope.row.rbUser.name }}
+								</div>
+							</el-popover>
+						</template>
 					</el-table-column>
 					<el-table-column align="center" prop="phone" label="手机号" width="140">
 					</el-table-column>
-					<el-table-column label="订单状态">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>订单id: {{ scope.row.reservationId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.state }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
 					</el-table-column>
-					<el-table-column label="书">
-						<template slot-scope="scope">
-							<el-popover trigger="hover" placement="top">
-								<p>书id: {{ scope.row.bookId }}</p>
-								<div slot="reference" class="name-wrapper">
-									<el-tag size="medium">{{ scope.row.rbBook }}</el-tag>
-								</div>
-							</el-popover>
-						</template>
-					</el-table-column>
-					<el-table-column prop="deadline" label="预定归还日期" width="165" align="center">
+					<el-table-column prop="deadline" label="预订归还日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column prop="returnDate" label="归还日期" width="165" align="center">
 					</el-table-column>
 					<el-table-column prop="takenDate" label="领取日期" width="165" align="center">
-					</el-table-column>
-					<el-table-column align='center' label="操作" width='250'>
-						<template slot-scope="scope">
-							<el-button size="mini" @click="pass(scope.$index, orderData)">通过</el-button>
-							<el-button size="mini" @click="rejectDialog = true">取消</el-button>
-							<!--daigai-->
-							<el-dialog title="取消理由" :visible.sync="rejectDialog">
-								<el-form>
-									<el-form-item label="取消理由">
-										<el-input placeholder="请填写不通过的理由" v-model="rejectReason" auto-complete="off"></el-input>
-									</el-form-item>
-								</el-form>
-								<div slot="footer" class="dialog-footer">
-									<el-button @click="rejectDialog = false">取 消</el-button>
-									<el-button type="primary" @click="cancel(scope.$index, orderData)">确 定</el-button>
-								</div>
-							</el-dialog>
-						</template>
 					</el-table-column>
 				</el-table>
 			</el-tab-pane>
@@ -272,10 +308,15 @@
 				rejectDialog: false,
 				currentPage: 1,
 				totalSize: 0,
-				pageSize: 10
+				pageSize: 10,
+				selectIndex: 0
 			}
 		},
 		methods: {
+			showReject(index){
+				this.selectIndex = index;
+				this.rejectDialog = true;
+			},
 			fitOrderState(orderState) {
 				var state = '';
 				switch(orderState) {
@@ -409,12 +450,12 @@
 			},
 			pass(index, row) {
 				var params = new URLSearchParams();
-				params.append('shareId', this.orderData[index].shareId);
+				params.append('reservationId', row[index].reservationId);
 				params.append('result', 0);
 				axios({
 						method: 'post',
 						dataType: 'json',
-						url: 'http://47.93.190.186:8080/checkShares.do',
+						url: 'http://47.93.190.186:8080/check.do',
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
@@ -436,13 +477,13 @@
 				console.log(index, row);
 				var _this = this;
 				var params = new URLSearchParams();
-				params.append('shareId', this.orderData[index].shareId);
+				params.append('reservationId', row[index].reservationId);
 				params.append('result', 1);
 				params.append('reason', this.rejectReason);
 				axios({
 						method: 'post',
 						dataType: 'json',
-						url: 'http://47.93.190.186:8080/checkShares.do',
+						url: 'http://47.93.190.186:8080/check.do',
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
@@ -455,6 +496,32 @@
 						if(response.data.statusCode == 102) {
 							row.splice(index, 1);
 							_this.rejectReason = '';
+						} else {
+							alert(response.data.message);
+						}
+					}).catch(function(err) {
+						alert("请检查网络连接");
+					});
+			},
+			returnBook(index, row) {
+				var params = new URLSearchParams();
+				params.append('reservationId', row[index].reservationId);
+				params.append('userId', row[index].userId);
+				params.append('bookId', row[index].bookId);
+				axios({
+						method: 'post',
+						dataType: 'json',
+						url: 'http://47.93.190.186:8080/reservationBookReturn.do',
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
+						data: params
+					})
+					.then(function(response) {
+						if(response.data.statusCode == 102) {
+							row.splice(index, 1);
 						} else {
 							alert(response.data.message);
 						}
@@ -490,7 +557,6 @@
 					});
 			},
 			getOrders(tab, currentPage = 1) {
-				this.orderData = [];
 				var _this = this;
 				this.isByPhone = false;
 				var params = new URLSearchParams();
@@ -508,10 +574,11 @@
 						data: params
 					})
 					.then(function(response) {
-						console.log(response)
+						_this.orderData = [];
 						if(response.data.statusCode == 102) {
 							var responseData = response.data.result.pageData;
 							for(var i = 0; i < responseData.length; i++) {
+								responseData[i].rbBook.bookImg =  'http://47.93.190.186:8080' + responseData[i].rbBook.bookImg;
 								responseData[i].takenDate = _this.timestampToTime(responseData[i].takenDate);
 								responseData[i].deadline = _this.timestampToTime(responseData[i].deadline);
 								responseData[i].returnDate = _this.timestampToTime(responseData[i].returnDate);
