@@ -70,8 +70,9 @@
 						url: 'http://47.93.190.186:8080/addCarousel.do',
 						data: data,
 						headers: {
-							'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryZN8L8IJgRBAp5pTW'
-
+							'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryZN8L8IJgRBAp5pTW',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
 						},
 						//						xsrfHeaderName: {
 						//							'x-key': window.sessionStorage.getItem('adminId'),

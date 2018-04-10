@@ -87,6 +87,10 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addGoodBook.do',
+						headers: {
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 						data: data,
 						cache: false,
 						processData: false,

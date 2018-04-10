@@ -231,6 +231,10 @@
 								dataType: 'json',
 								url: this.form.voteBookId != '' ? 'http://47.93.190.186:8080/updateVoteBook.do' : 'http://47.93.190.186:8080/addVoteBook.do',
 								data: data,
+								headers: {
+									'x-key': window.sessionStorage.getItem('adminId'),
+									'x-token': window.sessionStorage.getItem('token')
+								},
 								cache: false,
 								processData: false,
 								contentType: false,
