@@ -42,6 +42,7 @@
 
 <script>
 	import axios from 'axios'
+	import $ from 'jquery'
 
 	export default {
 		name: 'ManageTimeSlot',
@@ -66,7 +67,7 @@
 			}
 		},
 		methods: {
-			test(index, row){
+			test(index, row) {
 				console.log(index)
 				console.log(row[index].slotId)
 			},
@@ -80,7 +81,7 @@
 				console.log(file)
 			},
 			// template中的dialog的scope.$index始终指向最后一个数据，因此点击按钮时便传递index
-			showUpdate(index){
+			showUpdate(index) {
 				this.selectIndex = index;
 				this.updataTimeSlotDialog = true;
 			},
@@ -89,7 +90,7 @@
 				var _this = this;
 				var params = new URLSearchParams();
 				this.updataTimeSlotDialog = false;
-				params.append('slotTime', this.startTime+'-'+this.endTime);
+				params.append('slotTime', this.startTime + '-' + this.endTime);
 				axios({
 						method: 'post',
 						dataType: 'json',
@@ -161,7 +162,7 @@
 					.then(function(response) {
 						if(response.data.statusCode == 102) {
 							row.splice(index, 1);
-							
+
 						} else {
 							alert(response.data.message);
 						}
@@ -174,7 +175,13 @@
 				axios({
 						method: 'get',
 						dataType: 'jsonp',
-						url: 'http://47.93.190.186:8080/getTimeSlots.do'
+						url: 'http://47.93.190.186:8080/getTimeSlots.do',
+//						headers: {
+//							'Content-Type': 'application/x-www-form-urlencoded',
+//							'x-key': window.sessionStorage.getItem('adminId'),
+//							'x-token': window.sessionStorage.getItem('token')
+//						},
+
 					})
 					.then(function(response) {
 						_this.timeSlotData = [];
@@ -198,7 +205,7 @@
 				var params = new URLSearchParams();
 				this.updataTimeSlotDialog = false;
 				params.append('slotId', row[index].slotId);
-				params.append('slotTime', this.startTime+'-'+this.endTime);
+				params.append('slotTime', this.startTime + '-' + this.endTime);
 				axios({
 						method: 'post',
 						dataType: 'json',
@@ -249,6 +256,29 @@
 		},
 		mounted() {
 			this.getTimeSlots();
+//			$.ajax({
+//				type: "get",
+//				//与后端沟通好用get还是post
+//				dataType: "json",
+//				url: 'http://47.93.190.186:8080/getTimeSlots.do',
+//				//与后端沟通好发送的地址
+//				cache: false,
+////				headers: {
+////							'x-key': window.sessionStorage.getItem('adminId'),
+////							'x-token': window.sessionStorage.getItem('token')
+////				},
+//				beforeSend: function(xhr) {
+//					xhr.setRequestHeader('x-key', window.sessionStorage.getItem('adminId'));
+//					xhr.setRequestHeader('x-token', window.sessionStorage.getItem('token'));
+//				},
+//				success: function(data) {
+//					console.log(data);
+//
+//				},
+//				error: function(err) {
+//					console.log(err)
+//				}
+//			});
 		}
 	}
 </script>
