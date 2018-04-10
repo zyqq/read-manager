@@ -431,7 +431,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/reservationBookReceive.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -456,7 +456,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/check.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -484,7 +484,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/check.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -512,7 +512,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/reservationBookReturn.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -538,7 +538,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/deleteBook.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -566,7 +566,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/getReservationList.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')

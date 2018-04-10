@@ -59,7 +59,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/deleteHelp.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -86,6 +86,11 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addHelp.do',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 						data: params
 					})
 					.then(function(response) {
@@ -115,6 +120,11 @@
 				axios({
 						method: 'get',
 						dataType: 'json',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 						url: 'http://47.93.190.186:8080/getHelps.do'
 					})
 					.then(function(response) {

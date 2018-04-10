@@ -277,7 +277,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/checkShares.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -305,7 +305,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/checkShares.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -333,7 +333,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/deleteBook.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -364,7 +364,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/searhShareBookByPhone.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -409,7 +409,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/searhUserShareBook.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')

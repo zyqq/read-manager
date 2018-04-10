@@ -71,7 +71,12 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addUserProtocol.do',
-						data: params
+						data: params,
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 					})
 					.then(function(response) {
 						console.log(response);
@@ -123,8 +128,13 @@
 				var _this = this;
 				axios({
 						method: 'get',
-						dataType: 'jsonp',
-						url: 'http://47.93.190.186:8080/getUserProtocol.do'
+						dataType: 'json',
+						url: 'http://47.93.190.186:8080/getUserProtocol.do',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 					})
 					.then(function(response) {
 						_this.protocalData = [];
@@ -148,7 +158,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/updateUserProtocol.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -174,7 +184,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addBookById.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')

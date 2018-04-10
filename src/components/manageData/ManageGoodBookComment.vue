@@ -93,7 +93,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: this.form.wonderfulPostId!=''?'http://47.93.190.186:8080/updateWonderfulPost.do':'http://47.93.190.186:8080/addWonderfulPost.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -117,9 +117,9 @@
 				params.append('currentPage', currentPage);
 				axios({
 						method: 'post',
-						dataType: 'jsonp',
+						dataType: 'json',
 						url: 'http://47.93.190.186:8080/getWonderfulPostList.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -156,7 +156,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/deleteWonderfulPost.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -182,7 +182,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addBookById.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')

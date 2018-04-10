@@ -86,7 +86,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/ignoreWishBook.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -112,7 +112,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/storageWishBook.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -149,6 +149,11 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/getWishBookList.do',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 						data: params
 					})
 					.then(function(response) {

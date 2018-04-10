@@ -143,8 +143,13 @@
 				var _this= this;
 				axios({
 						method: 'get',
-						dataType: 'jsonp',
-						url: 'http://47.93.190.186:8080/getGoodBooks.do'
+						dataType: 'json',
+						url: 'http://47.93.190.186:8080/getGoodBooks.do',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 					})
 					.then(function(response) {
 						_this.bookData = [];
@@ -174,7 +179,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/deleteGoodBook.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -200,7 +205,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addBookById.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')

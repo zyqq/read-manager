@@ -95,7 +95,12 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addTimeSlot.do',
-						data: params
+						data: params,
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 					})
 					.then(function(response) {
 						console.log(response);
@@ -152,7 +157,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/deleteTimeSlot.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -176,11 +181,11 @@
 						method: 'get',
 						dataType: 'jsonp',
 						url: 'http://47.93.190.186:8080/getTimeSlots.do',
-//						headers: {
-//							'Content-Type': 'application/x-www-form-urlencoded',
-//							'x-key': window.sessionStorage.getItem('adminId'),
-//							'x-token': window.sessionStorage.getItem('token')
-//						},
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'x-key': window.sessionStorage.getItem('adminId'),
+							'x-token': window.sessionStorage.getItem('token')
+						},
 
 					})
 					.then(function(response) {
@@ -210,7 +215,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/updateTimeSlot.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -236,7 +241,7 @@
 						method: 'post',
 						dataType: 'json',
 						url: 'http://47.93.190.186:8080/addBookById.do',
-						header: {
+						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
