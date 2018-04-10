@@ -6,9 +6,9 @@
 			<el-table-column label="封面">
 				<template slot-scope="scope">
 					<el-popover trigger="hover" placement="top">
-						<p>{{ scope.row.name }}</p>
+						<img width="200px" height="200px" :src="scope.row.pictures" />
 						<div slot="reference" class="name-wrapper">
-							<img width="50px" height="50px" :src="scope.row.bookImg" />
+							<img width="50px" height="50px" :src="scope.row.pictures" />
 						</div>
 					</el-popover>
 				</template>

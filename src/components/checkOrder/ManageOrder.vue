@@ -7,6 +7,7 @@
 					</el-table-column>
 					<el-table-column label="封面">
 						<template slot-scope="scope">
+							<img width="200px" height="200px" :src="scope.row.rbBook.bookImg" />
 							<div slot="reference" class="name-wrapper">
 								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
 							</div>

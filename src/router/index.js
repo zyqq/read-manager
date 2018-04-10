@@ -17,6 +17,7 @@ import ManageGoodBooks from '@/components/manageData/ManageGoodBooks'
 import ManageBookComment from '@/components/manageData/ManageBookComment'
 import ManageGoodBookComment from '@/components/manageData/ManageGoodBookComment'
 import ManageVote from '@/components/manageData/ManageVote'
+import SearchBook from '@/components/manageData/SearchBook'
 
 //意见反馈与帮助
 import ManageHelp from '@/components/feedbacksAndHelp/ManageHelp'
@@ -104,6 +105,11 @@ export default new Router({
 			path: '/ManageVote',
 			name: 'ManageVote',
 			component: ManageVote
+		},
+		{
+			path: '/SearchBook',
+			name: 'SearchBook',
+			component: SearchBook
 		},
 		
 		//意见反馈与帮助

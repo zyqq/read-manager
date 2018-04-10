@@ -1,16 +1,16 @@
 <template>
 	<div>
 		<el-form ref="form" :rules="rules" name='form' :model="form" label-width="80px">
-			<el-form-item label="图书名字">
+			<el-form-item label="图书名字" prop='bookName'>
 				<el-input v-model="form.bookName"></el-input>
 			</el-form-item>
-			<el-form-item label="作者">
+			<el-form-item label="作者" prop='author'>
 				<el-input v-model="form.author"></el-input>
 			</el-form-item>
-			<el-form-item label="出版社">
+			<el-form-item label="出版社" prop='pubHouse'>
 				<el-input v-model="form.pubHouse"></el-input>
 			</el-form-item>
-			<el-form-item label="推荐投票理由">
+			<el-form-item label="推荐投票理由" prop='voteReason'>
 				<el-input type="textarea" v-model="form.voteReason"></el-input>
 			</el-form-item>
 			<el-form-item label="图书封面" prop="image">
@@ -21,25 +21,30 @@
 				</el-upload>
 			</el-form-item>
 
-			<el-form-item label="投票书isbn">
-				<el-input placeholder='新增的不必填，更新投票书的时候需填上相应书isbn' v-model="form.voteBookId"></el-input>
+			<el-form-item label="投票书id">
+				<el-input placeholder='新增的不必填，更新已有投票书的时候需填上相应书id' v-model="form.voteBookId"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit('form')">添加/更新</el-button>
+				<el-button type="primary" @click="onSubmit('form')">添加/更新可投票书籍</el-button>
 				<el-button @click="resetForm('form')">重置</el-button>
-				<el-button @click="openVote()">开启投票通道</el-button>
-				<el-button @click="closeVote()">关闭投票通道</el-button>
-				<el-button @click="againVote()">重置投票</el-button>
+				<div style='float:right'>
+					<el-button @click="openVote()">开启投票通道</el-button>
+					<el-button @click="closeVote()">关闭投票通道</el-button>
+					<el-button @click="againVote()">重置投票</el-button>
+					
+				</div>
 			</el-form-item>
 		</el-form>
 
 		<el-table :data="bookData" style="width: 100%">
-			<el-table-column prop="voteBookId" label="书isbn">
+			<el-table-column prop="voteBookId" label="投票书id">
 			</el-table-column>
 			<el-table-column label="封面">
 				<template slot-scope="scope">
 					<el-popover trigger="hover" placement="top">
 						<p>{{ scope.row.bookName }}</p>
+						<img width="200px" height="200px" :src="scope.row.bookImg" />
+						
 						<div slot="reference" class="name-wrapper">
 							<img width="50px" height="50px" :src="scope.row.bookImg" />
 						</div>
@@ -84,54 +89,29 @@
 					voteBookId: '',
 					image: '11'
 				},
-				fileList: [],
 				rules: {
-					name: [{
-							required: true,
-							message: '请输入活动名称',
-							trigger: 'blur'
-						},
-						{
-							min: 3,
-							max: 5,
-							message: '长度在 3 到 5 个字符',
-							trigger: 'blur'
-						}
-					],
-					region: [{
+					bookName: [{
 						required: true,
-						message: '请选择活动区域',
-						trigger: 'change'
+						message: '请填写图书名字',
+						trigger: 'blur'
 					}],
-					date1: [{
-						type: 'date',
+					author: [{
 						required: true,
-						message: '请选择日期',
-						trigger: 'change'
+						message: '请填写图书作者',
+						trigger: 'blur'
 					}],
-					date2: [{
-						type: 'date',
+					pubHouse: [{
 						required: true,
-						message: '请选择时间',
-						trigger: 'change'
+						message: '请填写出版社',
+						trigger: 'blur'
 					}],
-					type: [{
-						type: 'array',
+					voteReason: [{
 						required: true,
-						message: '请至少选择一个活动性质',
-						trigger: 'change'
-					}],
-					resource: [{
-						required: true,
-						message: '请选择活动资源',
-						trigger: 'change'
-					}],
-					desc: [{
-						required: true,
-						message: '请填写活动形式',
+						message: '请填写推荐投票理由',
 						trigger: 'blur'
 					}]
-				}
+				},
+				fileList: []
 			}
 		},
 		methods: {

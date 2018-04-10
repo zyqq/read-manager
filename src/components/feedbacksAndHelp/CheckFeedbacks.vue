@@ -5,6 +5,7 @@
 				<template slot-scope="scope">
 					<el-popover trigger="hover" placement="top">
 						<p>反馈 id: {{ scope.row.feedbackId }}</p>
+						<img width="200px" height="200px" :src="scope.row.printscreen" />
 						<div slot="reference" class="name-wrapper">
 							<img width="50px" height="50px" :src="scope.row.printscreen" />
 						</div>

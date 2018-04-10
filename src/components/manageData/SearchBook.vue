@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<div style="text-align: center;">
+			<el-input style='width: 50%;' placeholder='请填写想要搜索的书名、作者、出版社' v-model="searchKey"></el-input>
+			<el-button @click="getBook()">搜索</el-button>			
+		</div>
+		
 		<el-table :data="bookData" style="width: 100%">
 			<el-table-column prop="isbn" label="书isbn">
 			</el-table-column>
@@ -10,7 +15,7 @@
 						<img width="200px" height="200px" :src="scope.row.bookImg" />
 						
 						<div slot="reference" class="name-wrapper">
-							<img width="50px" height="50px" :src="scope.row.bookImg"/>
+							<img width="50px" height="50px" :src="scope.row.bookImg" />
 						</div>
 					</el-popover>
 				</template>
@@ -37,6 +42,12 @@
 			</el-table-column>
 			<el-table-column prop="votes" label="投票数">
 			</el-table-column>
+			<el-table-column prop="commentCnt" label="评论数">
+			</el-table-column>
+			<el-table-column prop="readCnt" label="阅读量">
+			</el-table-column>
+			<el-table-column prop="stock" label="库存">
+			</el-table-column>
 			<el-table-column prop="description" label="书籍简述">
 			</el-table-column>
 			<!--<el-table-column prop="tags" label="图书类型">
@@ -52,12 +63,12 @@
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column align="center" label="操作" width="160">
+			<!--<el-table-column align="center" label="操作" width="160">
 				<template slot-scope="scope">
 					<el-button size="mini" @click="handleAdd(scope.$index, bookData)">增数</el-button>
 					<el-button size="mini" type="danger" @click="handleDelete(scope.$index, bookData)">减数</el-button>
 				</template>
-			</el-table-column>
+			</el-table-column>-->
 		</el-table>
 		<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalSize">
 		</el-pagination>
@@ -69,23 +80,27 @@
 	import axios from 'axios'
 
 	export default {
-		name: 'ManageBook',
+		name: 'SearchBook',
 		data() {
 			return {
 				bookData: [],
 				currentPage: 1,
 				totalSize: 0,
-				pageSize: 10
+				pageSize: 10,
+				searchKey: '',
+				startNum: 0,
 			}
 		},
 		methods: {
 			handleSizeChange(val) {
 				console.log(`每页 ${val} 条`);
 				this.pageSize = val;
+				this.getBook(this.startNum, this.pageSize);
 			},
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);
-				this.getBook(val);
+				this.startNum = (val - 1) * this.pageSize;
+				this.getBook(this.startNum, this.pageSize);
 			},
 			timestampToTime(timestamp) {
 				var myData = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -97,17 +112,18 @@
 				var s = myData.getSeconds();
 				return Y + M + D + h + m + s;
 			},
-			getBook(currentPage = 1) {
+			getBook(start_num = 0, page_size = 1000) {
 
 				var _this = this;
 				var params = new URLSearchParams();
-				params.append('randby', 1);
-				params.append('currentPage', currentPage);
+				params.append('key', this.searchKey);
+				params.append('start_num', start_num);
+				params.append('page_size', page_size);
 				axios({
 						method: 'post',
 						dataType: 'json',
-						url: 'http://47.93.190.186:8080/getBookList.do',
-						headers: {
+						url: 'http://47.93.190.186:8080/searchBook.do',
+						header: {
 							'Content-Type': 'application/x-www-form-urlencoded',
 							'x-key': window.sessionStorage.getItem('adminId'),
 							'x-token': window.sessionStorage.getItem('token')
@@ -116,17 +132,22 @@
 					})
 					.then(function(response) {
 						_this.bookData = [];
-						if(response.data.statusCode == 102) {
-							var responseData = response.data.result.pageData;
+						if(response.data.statusCode == 100) {
+							var responseData = response.data.result;
 							console.log(responseData)
 							for(var i = 0; i < responseData.length; i++) {
 								console.log(responseData[i].pubDate)
 								responseData[i].pubDate = _this.timestampToTime(responseData[i].pubDate);
-								responseData[i].bookImg =  'http://47.93.190.186:8080' + responseData[i].bookImg;
+								responseData[i].bookImg = 'http://47.93.190.186:8080' + responseData[i].bookImg;
 								_this.bookData.push(responseData[i]);
+								
 							}
-							_this.pageSize = response.data.result.pageCount;
-							_this.totalSize = response.data.result.totalCount;
+							// 第一次加载tab页并且在第一页时先获取全部数据再获取第一页数据
+							if(page_size == 100000 && _this.startNum == 0) {
+								_this.totalSize = _this.bookData.length;
+								_this.bookData.length = 0;
+								_this.getBook(_this.startNum, _this.pageSize)
+							}
 						} else {
 							alert(response.data.message);
 						}
@@ -189,7 +210,6 @@
 			}
 		},
 		mounted() {
-			this.getBook();
 		}
 	}
 </script>

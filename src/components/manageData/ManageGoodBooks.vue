@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<el-form ref="form" name = 'form' :model="form" label-width="80px">
-			<el-form-item label="图书名字">
+		<el-form ref="form" :rules="rules" name='form' :model="form" label-width="80px">
+			<el-form-item label="图书名字" prop='title'>
 				<el-input v-model="form.title"></el-input>
 			</el-form-item>
-			<el-form-item label="图书介绍">
+			<el-form-item label="图书介绍" prop='description'>
 				<el-input type="textarea" v-model="form.description"></el-input>
 			</el-form-item>
 			<el-form-item label="图书封面" prop="image">
@@ -15,12 +15,11 @@
 				</el-upload>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit()">添加好书</el-button>
+				<el-button type="primary" @click="onSubmit('form')">添加好书</el-button>
 				<el-button @click="resetForm('form')">重置</el-button>
 			</el-form-item>
 		</el-form>
-		
-		
+
 		<el-table :data="bookData" style="width: 100%">
 			<el-table-column prop="goodbookId" label="书isbn">
 			</el-table-column>
@@ -28,8 +27,10 @@
 				<template slot-scope="scope">
 					<el-popover trigger="hover" placement="top">
 						<p>{{ scope.row.name }}</p>
+						<img width="200px" height="200px" :src="scope.row.picture" />
+						
 						<div slot="reference" class="name-wrapper">
-							<img width="50px" height="50px" :src="scope.row.picture"/>
+							<img width="50px" height="50px" :src="scope.row.picture" />
 						</div>
 					</el-popover>
 				</template>
@@ -64,6 +65,18 @@
 					description: '',
 					image: '11'
 				},
+				rules: {
+					title: [{
+						required: true,
+						message: '请填写图书名字',
+						trigger: 'blur'
+					}],
+					description: [{
+						required: true,
+						message: '请填写图书介绍',
+						trigger: 'blur'
+					}],
+				},
 				fileList: [],
 			}
 		},
@@ -71,42 +84,50 @@
 			onChange(file, fileList) {
 				console.log(document.querySelector("input[type=file]").files);
 				console.log(fileList);
-			//	this.form.image = file.url;
+				//	this.form.image = file.url;
 				//this.setImagePreview();
 			},
 			beforeUpload(file) {
 				console.log(file)
 			},
-			onSubmit() {
+			onSubmit(formName) {
 				var _this = this;
 				var formData = $("form[name=form]");
 				var data = new FormData(formData[0]);
 				data.append('title', this.form.title);
 				data.append('description', this.form.description);
-				axios({
-						method: 'post',
-						dataType: 'json',
-						url: 'http://47.93.190.186:8080/addGoodBook.do',
-						headers: {
-							'x-key': window.sessionStorage.getItem('adminId'),
-							'x-token': window.sessionStorage.getItem('token')
-						},
-						data: data,
-						cache: false,
-						processData: false,
-						contentType: false,
-					})
-					.then(function(response) {
-						console.log(response);
-						if(response.data.statusCode == 102) {
-							_this.getBook();
-						} else {
-							alert(response.data.message);
-						}
-					}).catch(function(err) {
-						console.log(err);
-						alert("请检查网络连接");
-					});
+				this.$refs[formName].validate((valid) => {
+					if(valid) {
+						axios({
+								method: 'post',
+								dataType: 'json',
+								url: 'http://47.93.190.186:8080/addGoodBook.do',
+								headers: {
+									'x-key': window.sessionStorage.getItem('adminId'),
+									'x-token': window.sessionStorage.getItem('token')
+								},
+								data: data,
+								cache: false,
+								processData: false,
+								contentType: false,
+							})
+							.then(function(response) {
+								console.log(response);
+								if(response.data.statusCode == 102) {
+									_this.getBook();
+								} else {
+									alert(response.data.message);
+								}
+							}).catch(function(err) {
+								console.log(err);
+								alert("请检查网络连接");
+							});
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
+
 			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
@@ -130,8 +151,7 @@
 				console.log(fileList);
 				//this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
 			},
-			
-			
+
 			timestampToTime(timestamp) {
 				var myData = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 				var Y = myData.getFullYear() + '-';
@@ -144,7 +164,7 @@
 				return Y + M + D + h + m + s;
 			},
 			getBook() {
-				var _this= this;
+				var _this = this;
 				axios({
 						method: 'get',
 						dataType: 'json',
@@ -163,7 +183,7 @@
 							for(var i = 0; i < responseData.length; i++) {
 								console.log(responseData[i].pubDate)
 								responseData[i].date = _this.timestampToTime(responseData[i].date);
-								responseData[i].picture =  'http://47.93.190.186:8080' + responseData[i].picture;
+								responseData[i].picture = 'http://47.93.190.186:8080' + responseData[i].picture;
 								_this.bookData.push(responseData[i]);
 							}
 						} else {

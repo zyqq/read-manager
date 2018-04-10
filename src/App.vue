@@ -29,6 +29,7 @@
 				<el-menu-item index="6-5"><router-link to="/ManageBookComment" class="router">管理书评</router-link></el-menu-item>
 				<el-menu-item index="6-6"><router-link to="/ManageGoodBookComment" class="router">管理精彩书评</router-link></el-menu-item>
 				<el-menu-item index="6-7"><router-link to="/ManageVote" class="router">管理投票</router-link></el-menu-item>
+				<el-menu-item index="6-8"><router-link to="/SearchBook" class="router">搜索图书</router-link></el-menu-item>
 			</el-submenu>
 
 			<el-submenu index="7">

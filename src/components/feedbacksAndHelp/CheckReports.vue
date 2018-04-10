@@ -3,21 +3,25 @@
 		<el-tabs v-model="activeName" @tab-click="handleClick">
 			<el-tab-pane label="没处理" name="0">
 				<el-table :data="reportsData" style="width: 100%">
-					<el-table-column label="封面">
+					<!--<el-table-column label="封面">
 						<template slot-scope="scope">
 							<el-popover trigger="hover" placement="top">
 								<p>反馈 id: {{ scope.row.feedbackId }}</p>
+								<img width="200px" height="200px" :src="scope.row.printscreen" />
+								
 								<div slot="reference" class="name-wrapper">
 									<img width="50px" height="50px" :src="scope.row.printscreen" />
 								</div>
 							</el-popover>
 						</template>
-					</el-table-column>
+					</el-table-column>-->
 					<el-table-column prop="userId" label="反馈者id">
 					</el-table-column>
 					<el-table-column prop="title" label="标题">
 					</el-table-column>
-					<el-table-column prop="detail" label="反馈内容">
+					<el-table-column prop="content" label="内容">
+					</el-table-column>
+					<el-table-column prop="detail" label="举报原因">
 					</el-table-column>
 					<el-table-column prop="proposedDate" label="反馈日期" align="center" width="165">
 					</el-table-column>
@@ -114,9 +118,14 @@
 			deleteReports(index, row) {			
 				var _this = this;
 				var params = new URLSearchParams();
-				params.append('uCommentId', row[index].uCommentId);
+				if(row[index].type == true){
+					params.append('uCommentId', row[index].uCommentId);					
+				}
 				params.append('userId', row[index].userId);
-				params.append('commentId', row[index].commentId);
+				if(row[index].type == false){
+					params.append('commentId', row[index].commentId);					
+				}
+				params.append('reportId', row[index].reportId);
 				params.append('type', row[index].type==false?0:1);
 				axios({
 						method: 'post',

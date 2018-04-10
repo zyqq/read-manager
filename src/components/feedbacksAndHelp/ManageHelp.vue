@@ -1,17 +1,17 @@
 <template>
 	<div>
-		<el-form ref="form" name='form' :model="form" label-width="80px">
-			<el-form-item label="问题">
+		<el-form ref="form" :rules="rules" name='form' :model="form" label-width="80px">
+			<el-form-item label="问题" prop='question'>
 				<el-input v-model="form.question"></el-input>
 			</el-form-item>
-			<el-form-item label="答案">
+			<el-form-item label="答案" prop='answer'>
 				<el-input v-model="form.answer"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit()">新增</el-button>
+				<el-button type="primary" @click="onSubmit('form')">新增</el-button>
 				<el-button @click="resetForm('form')">重置</el-button>
 			</el-form-item>
-		</el-form>		
+		</el-form>
 		<el-table :data="helpData" style="width: 100%">
 			<el-table-column prop="qandaId" label="id">
 			</el-table-column>
@@ -46,6 +46,18 @@
 					question: '',
 					answer: ''
 				},
+				rules: {
+					question: [{
+						required: true,
+						message: '请填写问题',
+						trigger: 'blur'
+					}],
+					answer: [{
+						required: true,
+						message: '请填写答案',
+						trigger: 'blur'
+					}]
+				},
 				helpData: []
 			}
 		},
@@ -68,8 +80,8 @@
 					})
 					.then(function(response) {
 						if(response.data.statusCode == 102) {
-							 row.splice(index, 1);
-							
+							row.splice(index, 1);
+
 						} else {
 							alert(response.data.message);
 						}
@@ -77,32 +89,39 @@
 						alert("请检查网络连接");
 					});
 			},
-			onSubmit() {
+			onSubmit(formName) {
 				var _this = this;
 				var params = new URLSearchParams();
 				params.append('question', this.form.question);
 				params.append('answer', this.form.answer);
-				axios({
-						method: 'post',
-						dataType: 'json',
-						url: 'http://47.93.190.186:8080/addHelp.do',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded',
-							'x-key': window.sessionStorage.getItem('adminId'),
-							'x-token': window.sessionStorage.getItem('token')
-						},
-						data: params
-					})
-					.then(function(response) {
-						if(response.data.statusCode == 102) {
-							_this.getHelps();
-						} else {
-							alert(response.data.message);
-						}
-					}).catch(function(err) {
-						console.log(err);
-						alert("请检查网络连接");
-					});
+				this.$refs[formName].validate((valid) => {
+					if(valid) {
+						axios({
+								method: 'post',
+								dataType: 'json',
+								url: 'http://47.93.190.186:8080/addHelp.do',
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'x-key': window.sessionStorage.getItem('adminId'),
+									'x-token': window.sessionStorage.getItem('token')
+								},
+								data: params
+							})
+							.then(function(response) {
+								if(response.data.statusCode == 102) {
+									_this.getHelps();
+								} else {
+									alert(response.data.message);
+								}
+							}).catch(function(err) {
+								console.log(err);
+								alert("请检查网络连接");
+							});
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
 			},
 			timestampToTime(timestamp) {
 				var myData = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -114,9 +133,9 @@
 				var s = myData.getSeconds();
 				return Y + M + D + h + m + s;
 			},
-			getHelps(){
+			getHelps() {
 				var _this = this;
-				
+
 				axios({
 						method: 'get',
 						dataType: 'json',
@@ -142,7 +161,7 @@
 					}).catch(function(err) {
 						console.log(err);
 						alert("请检查网络连接");
-					});				
+					});
 			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();

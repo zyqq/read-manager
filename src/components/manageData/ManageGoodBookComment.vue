@@ -1,20 +1,20 @@
 <template>
 	<div>
-		<el-form ref="form" name='form' :model="form" label-width="80px">
-			<el-form-item label="已存在的书评">
+		<el-form ref="form" :rules="rules" name='form' :model="form" label-width="80px">
+			<el-form-item label="已存在的书评" prop='postContent'>
 				<el-input v-model="form.postContent"></el-input>
 			</el-form-item>
-			<el-form-item label="所评论的书名">
+			<el-form-item label="所评论的书名" prop='postBookName'>
 				<el-input v-model="form.postBookName"></el-input>
 			</el-form-item>
-			<el-form-item label="书评作者">
+			<el-form-item label="书评作者" prop='postAuthor'>
 				<el-input v-model="form.postAuthor"></el-input>
 			</el-form-item>
 			<el-form-item label="书评id">
 				<el-input placeholder="新增不用填写，若更新现有精彩书评需填写原书评id" v-model="form.wonderfulPostId"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="addGoodComment()">添加/更新</el-button>
+				<el-button type="primary" @click="addGoodComment('form')">新增/更新精彩书评</el-button>
 				<el-button @click="resetForm('form')">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -31,7 +31,7 @@
 			</el-table-column>
 			<el-table-column align="center" label="操作" width="160">
 				<template slot-scope="scope">
-<!--					<el-button size="mini" @click="handleAdd(scope.$index, bookData)">增数</el-button>-->
+					<!--					<el-button size="mini" @click="handleAdd(scope.$index, bookData)">增数</el-button>-->
 					<el-button size="mini" type="danger" @click="handleDelete(scope.$index, bookData)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -54,6 +54,23 @@
 					postBookName: '',
 					postAuthor: '',
 					wonderfulPostId: ''
+				},
+				rules: {
+					postContent: [{
+						required: true,
+						message: '请填写已存在的书评',
+						trigger: 'blur'
+					}],
+					postBookName: [{
+						required: true,
+						message: '请填写所评论的书名',
+						trigger: 'blur'
+					}],
+					postAuthor: [{
+						required: true,
+						message: '请填写书评作者',
+						trigger: 'blur'
+					}],
 				},
 				bookData: [],
 				currentPage: 1,
@@ -80,35 +97,42 @@
 				var s = myData.getSeconds();
 				return Y + M + D + h + m + s;
 			},
-			addGoodComment() {
+			addGoodComment(formName) {
 				var _this = this;
 				var params = new URLSearchParams();
 				params.append('postContent', this.form.postContent);
 				params.append('postBookName', this.form.postBookName);
 				params.append('postAuthor', this.form.postAuthor);
-				if(this.form.wonderfulPostId!=''){
+				if(this.form.wonderfulPostId != '') {
 					params.append('wonderfulPostId', this.form.wonderfulPostId);
 				}
-				axios({
-						method: 'post',
-						dataType: 'json',
-						url: this.form.wonderfulPostId!=''?'http://47.93.190.186:8080/updateWonderfulPost.do':'http://47.93.190.186:8080/addWonderfulPost.do',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded',
-							'x-key': window.sessionStorage.getItem('adminId'),
-							'x-token': window.sessionStorage.getItem('token')
-						},
-						data: params
-					})
-					.then(function(response) {
-						if(response.data.statusCode == 102) {
-							_this.getBookComment(0, 10);
-						} else {
-							alert(response.data.message);
-						}
-					}).catch(function(err) {
-						alert("请检查网络连接");
-					});
+				this.$refs[formName].validate((valid) => {
+					if(valid) {
+						axios({
+								method: 'post',
+								dataType: 'json',
+								url: this.form.wonderfulPostId != '' ? 'http://47.93.190.186:8080/updateWonderfulPost.do' : 'http://47.93.190.186:8080/addWonderfulPost.do',
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'x-key': window.sessionStorage.getItem('adminId'),
+									'x-token': window.sessionStorage.getItem('token')
+								},
+								data: params
+							})
+							.then(function(response) {
+								if(response.data.statusCode == 102) {
+									_this.getBookComment(0, 10);
+								} else {
+									alert(response.data.message);
+								}
+							}).catch(function(err) {
+								alert("请检查网络连接");
+							});
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
 			},
 			getBookComment(currentPage = 1) {
 
