@@ -80,11 +80,11 @@
 					<el-table-column prop="location" label="上门领书地点">
 					</el-table-column>
 					</el-table-column>
-					<el-table-column align="center" label="操作">
+					<!--<el-table-column align="center" label="操作">
 						<template slot-scope="scope">
 							<el-button size="mini" type="danger" @click="handleDelete(scope.$index, shareData)">删除</el-button>
 						</template>
-					</el-table-column>
+					</el-table-column>-->
 				</el-table>
 			</el-tab-pane>
 			<el-tab-pane label="待交书" name="3">
@@ -239,7 +239,7 @@
 				var formData = $("form[name="+shareId+"]");
 				console.log(formData)
 				var data = new FormData(formData[0]);
-				data.append('name', row[index].name);
+				data.append('name', row[index].bookName);
 				data.append('author', row[index].author);
 				data.append('pubHouse', row[index].pubHouse);
 				data.append('isbn', row[index].bookId);

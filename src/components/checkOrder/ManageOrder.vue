@@ -44,7 +44,7 @@
 					<el-table-column align='center' label="操作" width='250'>
 						<template slot-scope="scope">
 							<el-button size="mini" @click="pass(scope.$index, orderData)">通过</el-button>
-							<el-button size="mini" @click="rejectDialog = true">拒绝</el-button>
+							<el-button size="mini" @click="showReject(scope.$index)">拒绝</el-button>
 							<!--daigai-->
 							<el-dialog title="拒绝理由" :visible.sync="rejectDialog">
 								<el-form>
@@ -54,7 +54,7 @@
 								</el-form>
 								<div slot="footer" class="dialog-footer">
 									<el-button @click="rejectDialog = false">取 消</el-button>
-									<el-button type="primary" @click="cancel(scope.$index, orderData)">确 定</el-button>
+									<el-button type="primary" @click="cancel(selectIndex, orderData)">确 定</el-button>
 								</div>
 							</el-dialog>
 						</template>
@@ -67,6 +67,8 @@
 					</el-table-column>
 					<el-table-column label="封面">
 						<template slot-scope="scope">
+							<img width="200px" height="200px" :src="scope.row.rbBook.bookImg" />
+							
 							<div slot="reference" class="name-wrapper">
 								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
 							</div>
@@ -113,6 +115,8 @@
 					</el-table-column>
 					<el-table-column label="封面">
 						<template slot-scope="scope">
+							<img width="200px" height="200px" :src="scope.row.rbBook.bookImg" />
+							
 							<div slot="reference" class="name-wrapper">
 								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
 							</div>
@@ -154,6 +158,8 @@
 					</el-table-column>
 					<el-table-column label="封面">
 						<template slot-scope="scope">
+							<img width="200px" height="200px" :src="scope.row.rbBook.bookImg" />
+							
 							<div slot="reference" class="name-wrapper">
 								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
 							</div>
@@ -202,6 +208,7 @@
 					</el-table-column>
 					<el-table-column label="封面">
 						<template slot-scope="scope">
+							<img width="200px" height="200px" :src="scope.row.rbBook.bookImg" />
 							<div slot="reference" class="name-wrapper">
 								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
 							</div>
@@ -245,6 +252,8 @@
 					</el-table-column>
 					<el-table-column label="封面">
 						<template slot-scope="scope">
+							<img width="200px" height="200px" :src="scope.row.rbBook.bookImg" />
+							
 							<div slot="reference" class="name-wrapper">
 								<img width="50px" height="50px" :src="scope.row.rbBook.bookImg"/>
 							</div>

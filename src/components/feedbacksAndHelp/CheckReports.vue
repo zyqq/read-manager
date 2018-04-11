@@ -15,6 +15,8 @@
 							</el-popover>
 						</template>
 					</el-table-column>-->
+					<el-table-column prop="feedbackId" label="反馈id">
+					</el-table-column>
 					<el-table-column prop="userId" label="反馈者id">
 					</el-table-column>
 					<el-table-column prop="title" label="标题">
@@ -35,7 +37,7 @@
 			</el-tab-pane>
 			<el-tab-pane label="已处理" name="1">
 				<el-table :data="reportsData" style="width: 100%">
-					<el-table-column label="封面">
+					<!--<el-table-column label="封面">
 						<template slot-scope="scope">
 							<el-popover trigger="hover" placement="top">
 								<p>反馈 id: {{ scope.row.feedbackId }}</p>
@@ -44,6 +46,8 @@
 								</div>
 							</el-popover>
 						</template>
+					</el-table-column>-->
+					<el-table-column prop="feedbackId" label="反馈id">
 					</el-table-column>
 					<el-table-column prop="userId" label="反馈者id">
 					</el-table-column>
@@ -118,9 +122,7 @@
 			deleteReports(index, row) {			
 				var _this = this;
 				var params = new URLSearchParams();
-				if(row[index].type == true){
-					params.append('uCommentId', row[index].uCommentId);					
-				}
+				params.append('uCommentId', row[index].uCommentId);						
 				params.append('userId', row[index].userId);
 				if(row[index].type == false){
 					params.append('commentId', row[index].commentId);					
